@@ -25,16 +25,18 @@ if os.getenv('VPN_ENABLE', True):
         child.expect(['Windscribe Password: ', pexpect.EOF])
         child.sendline(password)
 
-    child = pexpect.spawn('windscribe connect')
+    child.wait()
 
+    child = pexpect.spawn('windscribe connect')
     cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF])
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")
     elif cond == 1:
         raise Exception(f"Unable to properly connect to Windscribe service. Please restart docker.")
 
-    child = pexpect.spawn('windscribe firewall on')
+    child.wait()
 
+    child = pexpect.spawn('windscribe firewall on')
     cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF])
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")
