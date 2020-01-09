@@ -1,7 +1,6 @@
 import os
 import subprocess
 import pexpect
-import time
 
 print('Initializing Container')
 

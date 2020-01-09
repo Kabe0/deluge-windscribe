@@ -1,6 +1,5 @@
 import subprocess
 import os
-import shutil
 
 if not os.path.exists("~/.config/deluge"):
     os.makedirs("~/.config/deluge")

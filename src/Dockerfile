@@ -27,7 +27,7 @@ RUN \
  apt-get install -y \
 	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- && \
 	# Dev tools nano dnsutils iputils-ping lsof
- python3 -m pip install netifaces netaddr psutil pexpect && \
+ python3 -m pip install pexpect && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
