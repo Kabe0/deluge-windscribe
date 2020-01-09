@@ -5,26 +5,30 @@ import time
 
 print('Initializing Container')
 
-with open('/config/auth.conf') as f:
-    lines = f.read().splitlines()
-    if len(lines) < 2:
-        raise Exception("auth.conf is malformed. Please ensure that the file is configured correctly so that "
-                        "windscribe can login.")
-    username = lines[0]
-    password = lines[1]
+if os.getenv('VPN_ENABLE', True):
+    vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
 
-subprocess.run(["windscribe", "start"])
+    with open('/config/auth.conf') as f:
+        lines = f.read().splitlines()
+        if len(lines) < 2:
+            raise Exception("auth.conf is malformed. Please ensure that the file is configured correctly so that "
+                            "windscribe can login.")
+        username = lines[0]
+        password = lines[1]
 
-child = pexpect.spawn('windscribe login')
-child.expect('Windscribe Username: ')
-# time.sleep(0.5)
-child.sendline(username)
-child.expect('Windscribe Password: ')
-# time.sleep(0.5)
-child.sendline(password)
+    subprocess.run(["windscribe", "start"])
 
-subprocess.run(["windscribe", "connect"])
+    child = pexpect.spawn('windscribe login')
 
+    cond = child.expect(['Already Logged in', 'Windscribe Username: ', pexpect.EOF])
+    if cond == 1:
+        child.sendline(username)
+        child.expect(['Windscribe Password: ', pexpect.EOF])
+        child.sendline(password)
+
+    subprocess.run(["windscribe", "connect"])
+    subprocess.run(["windscribe", "firewall", "on"])
+
+# Sleep to allow for VPN to connect before trying to init python
 print('Initializing Deluge')
-
 subprocess.run(["/usr/bin/python3", "/usr/bin/run.py"])

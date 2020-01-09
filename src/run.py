@@ -5,10 +5,6 @@ import shutil
 if not os.path.exists("~/.config/deluge"):
     os.makedirs("~/.config/deluge")
 
-
-# shutil.copyfile("/root/.bashrc", "")
-# os.path.c
-
 DEL_UID = os.getenv("DEL_UID", 1000)
 DEL_GID = os.getenv("DEL_GID", 1000)
 DEL_PORT = os.getenv("DEL_PORT", 58846)
@@ -26,4 +22,5 @@ if webPort:
     webCmd.append(webPort)
 
 subprocess.Popen(webCmd)
-subprocess.run(["su", "deluge", "-c", f"\"/usr/bin/deluged --do-not-daemonize -p {DEL_PORT}\""], shell=True)
+print("Deluged Init")
+subprocess.run(["/usr/bin/run.sh"])
