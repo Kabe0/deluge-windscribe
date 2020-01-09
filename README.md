@@ -18,8 +18,8 @@ docker run \
  -p 8112:8112 \
  --cap-add=NET_ADMIN \
  --device /dev/net/tun:/dev/net/tun \
- --name deluge-openvpn \
- kabe0/deluge-openvpn
+ --name deluge-windscribe \
+ kabe0/deluge-windscribe
 ```
 
 The --device is required to ensure that the Windscribe can set the necessary configuration details.
