@@ -19,7 +19,7 @@ if os.getenv('VPN_ENABLE', True):
 
     child = pexpect.spawn('windscribe login')
 
-    cond = child.expect(['Already Logged in', 'Windscribe Username: ', pexpect.EOF])
+    cond = child.expect(['Already Logged in', 'Windscribe Username: ', pexpect.EOF], timeout=50)
     if cond == 1:
         child.sendline(username)
         child.expect(['Windscribe Password: ', pexpect.EOF])
@@ -28,7 +28,7 @@ if os.getenv('VPN_ENABLE', True):
     child.wait()
 
     child = pexpect.spawn('windscribe connect')
-    cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF])
+    cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF], timeout=50)
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")
     elif cond == 1:
@@ -37,7 +37,7 @@ if os.getenv('VPN_ENABLE', True):
     child.wait()
 
     child = pexpect.spawn('windscribe firewall on')
-    cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF])
+    cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF], timeout=50)
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")
     elif cond == 1:
