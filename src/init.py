@@ -6,14 +6,20 @@ print('Initializing Container')
 
 if os.getenv('VPN_ENABLE', True):
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
+    location = "best"
 
     with open(vpnAuth) as f:
         lines = f.read().splitlines()
-        if len(lines) < 2:
+        lineCount = len(lines)
+
+        if lineCount < 2:
             raise Exception("auth.conf is malformed. Please ensure that the file is configured correctly so that "
                             "windscribe can login.")
         username = lines[0]
         password = lines[1]
+
+        if lineCount >= 3:
+            location = lines[2]
 
     subprocess.run(["windscribe", "start"])
 
@@ -27,7 +33,7 @@ if os.getenv('VPN_ENABLE', True):
 
     child.wait()
 
-    child = pexpect.spawn('windscribe connect')
+    child = pexpect.spawn(f"windscribe connect {location}")
     cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF], timeout=50)
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")
