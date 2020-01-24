@@ -12,14 +12,15 @@ config.ovpn to generate the required ufw firewall permissions.
 In order to run the container, you will need to create an auth.conf file with the username and password details. Then you can run the container command below it.
 
 ### 1. Authorization
-You will need to create a config file to auto-login to Windscribe. The location of the config file will be the path set in the environment variable VPN_AUTH (/config/auth.conf). The file itself should contain two lines (no spaces).
+You will need to create a config file to auto-login to Windscribe. The location of the config file will be the path set in the environment variable VPN_AUTH (/config/auth.conf). The file itself should contain three lines (no spaces).
 ```
 <username>
 <password>
 <location|best>
 ```
-The file will be automatically loaded when the container is started, otherwise the container will fail to connect and terminate.
-The location line is optional, but if defined will let you connect to a specific proxy location.
+The file will be automatically loaded when the container is started, otherwise the container will fail to connect and terminate. 
+
+The location line is optional, but if defined will let you connect to a specific proxy location. For options, view the _Windscribe Location Options_ for options.
 
 ### 2. Container Command
 
@@ -62,6 +63,8 @@ the Windscribe service has enough permissions to change the network configuratio
 | HOME | /config | The path to the home directory.|
 
 ### Windscribe Location Options
+You may use any of the values to select a location. The Label column allows connecting directly to a single VPN location.
+
 | Location | Short Name | City Name | Label |
 | -------- | ---------- | --------- | ----- |
 |US Central|US-C|Atlanta|Mountain|
