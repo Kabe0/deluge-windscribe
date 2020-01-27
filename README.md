@@ -7,6 +7,15 @@ VPN itself. To simplify the process, config.ovpn files are used
 The container will read the address and port details defined in the
 config.ovpn to generate the required ufw firewall permissions.
 
+## Supported Architectures
+Images are build with the supported windscribe-cli architectures such as x86-64, and armhf. Docker manifest is being used for multi-platform awareness.
+The architectures supported by this image are:
+
+|Architecture|
+|-----|
+|x86-64|
+|armhf|
+
 ## Getting Started
 
 In order to run the container, you will need to create an auth.conf file with the username and password details. Then you can run the container command below it.
