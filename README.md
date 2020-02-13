@@ -21,7 +21,22 @@ The architectures supported by this image are:
 In order to run the container, you will need to create an auth.conf file with the username and password details. Then you can run the container command below it.
 
 ### 1. Authorization
-You will need to create a config file to auto-login to Windscribe. The location of the config file will be the path set in the environment variable VPN_AUTH (/config/auth.conf). The file itself should contain three lines (no spaces).
+You will need to create a config file to auto-login to Windscribe.
+You can either set some environment variables or configure a config file. Below goes over both approaches.
+#### Environment Variables
+You may use environment variables to configure your config files. The variables are as follows...
+
+- VPN_USERNAME
+- VPN_PASSWORD
+- VPN_LOCATION
+
+If VPN_USERNAME or VPN_PASSWORD is set, the /config/auth.conf will be ignored. Set the VPN settings to your Windscribe
+login details. VPN_LOCATION is defaulted to _best_ and is optional.
+
+#### /config/auth.conf file
+A volume mount must be configured for this process to work. In the example shown below, we configure a folder to mount the current
+working directory to $PWD/config:/config. The location of the config file will be the path set in the environment variable VPN_AUTH (/config/auth.conf). 
+The file itself should contain three lines (no spaces).
 ```
 <username>
 <password>
@@ -69,6 +84,9 @@ the Windscribe service has enough permissions to change the network configuratio
 | DEL_UID | 1000 | The ID used for the main deluge user account. Changing this value could break the config folder. |
 | DEL_GID | 1000 | The ID used for the main deluge group account. Changing this value could break the config folder. |
 | VPN_AUTH | /config/auth.conf | The path for the auth.conf which should store the username and password. If the file is not found, the application will still try to connect to the Windscribe server. |
+| VPN_USERNAME | null | (Optional) alternative to using the VPN_AUTH file. VPN_PASSWORD must also be set at the same time.
+| VPN_PASSWORD | null | (Optional) alternative to using the VPN_AUTH file. VPN_USERNAME must also be set at the same time.
+| VPN_LOCATION | best | (Optional) alternative to using the VPN_AUTH file.
 | HOME | /config | The path to the home directory.|
 
 ### Windscribe Location Options

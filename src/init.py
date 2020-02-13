@@ -6,20 +6,24 @@ print('Initializing Container')
 
 if os.getenv('VPN_ENABLE', True):
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
-    location = "best"
 
-    with open(vpnAuth) as f:
-        lines = f.read().splitlines()
-        lineCount = len(lines)
+    username = os.getenv('VPN_USERNAME')
+    password = os.getenv('VPN_PASSWORD')
+    location = os.getenv('VPN_LOCATION', 'best')
 
-        if lineCount < 2:
-            raise Exception("auth.conf is malformed. Please ensure that the file is configured correctly so that "
-                            "windscribe can login.")
-        username = lines[0]
-        password = lines[1]
+    if not username and not password:
+        with open(vpnAuth) as f:
+            lines = f.read().splitlines()
+            lineCount = len(lines)
 
-        if lineCount >= 3:
-            location = lines[2]
+            if lineCount < 2:
+                raise Exception("auth.conf is malformed. Please ensure that the file is configured correctly so that "
+                                "windscribe can login.")
+            username = lines[0]
+            password = lines[1]
+
+            if lineCount >= 3:
+                location = lines[2]
 
     subprocess.run(["windscribe", "start"])
 
