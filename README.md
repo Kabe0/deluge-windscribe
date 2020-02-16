@@ -20,6 +20,8 @@ The architectures supported by this image are:
 
 In order to run the container, you will need to create an auth.conf file with the username and password details. Then you can run the container command below it.
 
+On first run, the deluge web UI will ask for a password. That password will be set to the default password, which is __deluge__.
+
 ### 1. Authorization
 You will need to create a config file to auto-login to Windscribe.
 You can either set some environment variables or configure a config file. Below goes over both approaches.
