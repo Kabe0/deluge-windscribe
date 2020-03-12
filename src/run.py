@@ -8,6 +8,9 @@ DEL_UID = os.getenv("DEL_UID", 1000)
 DEL_GID = os.getenv("DEL_GID", 1000)
 DEL_PORT = os.getenv("DEL_PORT", 58846)
 
+print("Configuring firewall settings")
+subprocess.run(["/usr/bin/python3", "/usr/bin/up.py"])
+
 if DEL_UID != 1000:
     subprocess.run(["/usr/sbin/usermod", "-u", f"{DEL_UID}", "deluge"])
 if DEL_GID != 1000:

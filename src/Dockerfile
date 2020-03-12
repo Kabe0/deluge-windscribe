@@ -25,9 +25,10 @@ RUN \
  LC_ALL=C.UTF-8 add-apt-repository ppa:deluge-team/stable && \
  apt-get update && \
  apt-get install -y \
-	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- && \
-	# Dev tools nano dnsutils iputils-ping lsof
- python3 -m pip install pexpect && \
+	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
+	nano dnsutils iputils-ping lsof net-tools && \
+ python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
+# python3 -m pip install pexpect && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
@@ -42,6 +43,6 @@ RUN \
 # ports and volumes
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
-COPY init.py run.py run.sh /usr/bin/
+COPY init.py run.py run.sh up.py /usr/bin/
 
 CMD /usr/bin/python3 /usr/bin/init.py

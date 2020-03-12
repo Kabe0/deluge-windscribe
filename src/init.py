@@ -3,8 +3,9 @@ import subprocess
 import pexpect
 
 print('Initializing Container')
-
+print('Yay')
 if os.getenv('VPN_ENABLE', True):
+    print("tree")
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
 
     username = os.getenv('VPN_USERNAME')
