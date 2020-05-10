@@ -46,6 +46,8 @@ with open("/etc/resolv.conf", "w") as myfile:
         myfile.write(f"nameserver {dns}\n")
     myfile.close()
 
+subprocess.run(["/sbin/ip", "route", "del", "128.0.0.0/1"])
+
 # Grab all the domain ip addresses
 # result = socket.getaddrinfo(vpnname, None, socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_IP, socket.AI_CANONNAME)
 # list = [x[4][0] for x in result]
@@ -65,19 +67,19 @@ with open("/etc/resolv.conf", "w") as myfile:
 # subprocess.run(["/sbin/iptables", "-t", "nat", "--flush"])
 # subprocess.run(["/sbin/iptables", "-t", "nat", "--delete-chain"])
 # subprocess.run(["/sbin/iptables", "-P", "OUTPUT", "DROP"])
-subprocess.run(["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-i", "lo"])
-subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-o", "lo"])
+# subprocess.run(["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-i", "lo"])
+# subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-o", "lo"])
 
 # Assign the docker cidr to the firewall
-subprocess.run(["/sbin/iptables", "-A", "INPUT", "--src", f"{dockeraddress.cidr}", "-j", "ACCEPT", "-i", "eth0"])
-subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-d", f"{dockeraddress.cidr}", "-j", "ACCEPT", "-o", "eth0"])
+# subprocess.run(["/sbin/iptables", "-A", "INPUT", "--src", f"{dockeraddress.cidr}", "-j", "ACCEPT", "-i", "eth0"])
+# subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-d", f"{dockeraddress.cidr}", "-j", "ACCEPT", "-o", "eth0"])
 
-subprocess.run(
-    ["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-p", "tcp", "-m", "conntrack",
-     "--ctstate", "NEW,ESTABLISHED", "--dport", f"8112"])
-subprocess.run(
-    ["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-p", "tcp", "-m", "conntrack",
-     "--ctstate", "ESTABLISHED", "--sport", f"8112"])
+# subprocess.run(
+#     ["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-p", "tcp", "-m", "conntrack",
+#      "--ctstate", "NEW,ESTABLISHED", "--dport", f"8112"])
+# subprocess.run(
+#     ["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-p", "tcp", "-m", "conntrack",
+#      "--ctstate", "ESTABLISHED", "--sport", f"8112"])
 
 # Assign each IP to the UFW firewall list
 # for vpnip in list:
@@ -99,8 +101,12 @@ subprocess.run(
 #     pyufw.enable()
 #     pp.pprint(pyufw.status())
 # else:
-subprocess.run(["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-i", "tun0"])
-subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-o", "tun0"])
+# subprocess.run(["/sbin/iptables", "-A", "INPUT", "-j", "ACCEPT", "-i", "tun0"])
+# subprocess.run(["/sbin/iptables", "-A", "OUTPUT", "-j", "ACCEPT", "-o", "tun0"])
 
 # Run the processes
 # subprocess.Popen(["/usr/bin/python3", "/usr/bin/run.py"])
+# subprocess.run(["/sbin/iptables", "-I", "OUTPUT", "-p", "tcp", "--sport", "8112", "-m", "conntrack", "--ctstate", "ESTABLISHED", "-j", "ACCEPT"])
+# subprocess.run(["/sbin/iptables", "-I", "INPUT", "-p", "tcp", "--dport", "8112", "-m", "conntrack", "--ctstate", "NEW,ESTABLISHED", "-j", "ACCEPT"])
+ # iptables -I OUTPUT -p tcp --sport 8112 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+ # iptables -I INPUT -p tcp --dport 8112 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT

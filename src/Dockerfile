@@ -10,6 +10,7 @@ ENV WEB_PORT=8112
 ENV DEL_PORT=58846
 ENV DEL_UID=1000
 ENV DEL_GID=1000
+ENV DEL_INT=tun0
 
 ENV VPN_ENABLE=True
 ENV VPN_AUTH="/config/auth.conf"
@@ -44,5 +45,6 @@ RUN \
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
 COPY init.py run.py run.sh up.py /usr/bin/
+COPY core.conf /usr/local/etc/
 
 CMD /usr/bin/python3 /usr/bin/init.py
