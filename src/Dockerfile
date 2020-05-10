@@ -10,6 +10,7 @@ ENV WEB_PORT=8112
 ENV DEL_PORT=58846
 ENV DEL_UID=1000
 ENV DEL_GID=1000
+ENV DEL_INT=tun0
 
 ENV VPN_ENABLE=True
 ENV VPN_AUTH="/config/auth.conf"
@@ -25,9 +26,10 @@ RUN \
  LC_ALL=C.UTF-8 add-apt-repository ppa:deluge-team/stable && \
  apt-get update && \
  apt-get install -y \
-	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- && \
-	# Dev tools nano dnsutils iputils-ping lsof
- python3 -m pip install pexpect && \
+	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
+	nano dnsutils iputils-ping lsof net-tools && \
+ python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
+# python3 -m pip install pexpect && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
@@ -42,6 +44,7 @@ RUN \
 # ports and volumes
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
-COPY init.py run.py run.sh /usr/bin/
+COPY init.py run.py run.sh up.py /usr/bin/
+COPY core.conf /usr/local/etc/
 
 CMD /usr/bin/python3 /usr/bin/init.py

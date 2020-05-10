@@ -3,7 +3,6 @@ import subprocess
 import pexpect
 
 print('Initializing Container')
-
 if os.getenv('VPN_ENABLE', True):
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
 
@@ -12,7 +11,8 @@ if os.getenv('VPN_ENABLE', True):
     location = os.getenv('VPN_LOCATION', 'best')
 
     if not username and not password:
-        with open(vpnAuth) as f:
+        print('Using config file /config/auth.conf.')
+        with open(vpnAuth, 'rU') as f:
             lines = f.read().splitlines()
             lineCount = len(lines)
 
@@ -24,6 +24,8 @@ if os.getenv('VPN_ENABLE', True):
 
             if lineCount >= 3:
                 location = lines[2]
+    else:
+        print('Using VPN_USERNAME and VPN_PASSWORD to login.')
 
     subprocess.run(["windscribe", "start"])
 
