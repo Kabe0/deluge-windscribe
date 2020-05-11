@@ -57,4 +57,4 @@ if os.getenv('VPN_ENABLE', True):
 
 # Sleep to allow for VPN to connect before trying to init python
 print('Initializing Deluge')
-subprocess.run(["/usr/bin/python3", "/usr/bin/run.py"])
+subprocess.run(["/usr/bin/python3", "-u", "/usr/bin/run.py"])

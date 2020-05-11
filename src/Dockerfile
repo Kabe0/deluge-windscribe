@@ -47,4 +47,4 @@ VOLUME /config /downloads
 COPY init.py run.py run.sh up.py /usr/bin/
 COPY core.conf /usr/local/etc/
 
-CMD /usr/bin/python3 /usr/bin/init.py
+CMD /usr/bin/python3 -u /usr/bin/init.py

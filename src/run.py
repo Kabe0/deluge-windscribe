@@ -18,7 +18,7 @@ if not os.path.exists("/config/.config/deluge"):
     print("Making config directory.")
     os.makedirs("/config/.config/deluge")
     subprocess.run(["cp", "/usr/local/etc/core.conf", "/config/.config/deluge/"])
-    subprocess.run(["chown", "-R", f"{DEL_UID}:{DEL_GID}", "/config/.config"])
+    subprocess.run(["chown", "-R", f"{DEL_UID}:{DEL_GID}", "/config"])
 
 webCmd = ["su", "deluge", "-c", "/usr/bin/deluge-web"]
 webPort = os.getenv("WEB_PORT", None)
