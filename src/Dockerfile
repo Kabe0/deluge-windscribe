@@ -27,7 +27,7 @@ RUN \
  apt-get update && \
  apt-get install -y \
 	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
-	nano dnsutils iputils-ping lsof net-tools && \
+	nano dnsutils iputils-ping lsof net-tools cron && \
  python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
 # python3 -m pip install pexpect && \
  apt-get clean && \
@@ -44,7 +44,10 @@ RUN \
 # ports and volumes
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
-COPY init.py run.py run.sh up.py /usr/bin/
+COPY init.py run.py run.sh up.py unblock.sh /usr/bin/
 COPY core.conf /usr/local/etc/
+COPY unblock-cron /etc/cron.d/unblock-cron
+
+RUN crontab /etc/cron.d/unblock-cron
 
 CMD /usr/bin/python3 -u /usr/bin/init.py
