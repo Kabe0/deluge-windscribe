@@ -57,6 +57,7 @@ docker run \
  -v $PWD/config:/config \
  -v $PWD/downloads:/downloads \
  -p 8112:8112 \
+ -p 58846:58846 \
  --cap-add=NET_ADMIN \
  --device /dev/net/tun:/dev/net/tun \
  --name deluge-windscribe \
