@@ -8,6 +8,7 @@ DEL_INT = os.getenv('DEL_INT', 'tun0')
 
 print("Configuring firewall settings")
 os.popen("ip route del 128.0.0.0/1")
+os.popen("cron &")
 
 if DEL_UID != 1000:
     subprocess.run(["/usr/sbin/usermod", "-u", f"{DEL_UID}", "deluge"])
