@@ -24,7 +24,8 @@ On first run, the deluge web UI will ask for a password. That password will be s
 
 ### 1. Authorization
 You will need to create a config file to auto-login to Windscribe.
-You can either set some environment variables or configure a config file. Below goes over both approaches.
+You can either set some environment variables or configure a config file. The login information will be identical to the username and password you use to login to your windscribe profile. Below goes over both approaches.
+
 #### Environment Variables
 You may use environment variables to configure your config files. The variables are as follows...
 
