@@ -39,7 +39,8 @@ RUN \
  apt-get clean && \
  apt-get purge -y \
     software-properties-common dirmngr gpg-agent && \
- useradd -m -d $HOME deluge
+ useradd -m -d $HOME deluge && \
+ usermod -a -G users deluge
 
 # ports and volumes
 EXPOSE 8112 6881/udp
