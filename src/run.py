@@ -11,15 +11,18 @@ os.popen("ip route del 128.0.0.0/1")
 os.popen("cron &")
 
 if DEL_UID != 1000:
+    print(f"Setting UID to {DEL_UID}")
     subprocess.run(["/usr/sbin/usermod", "-u", f"{DEL_UID}", "deluge"])
 if DEL_GID != 1000:
+    print(f"Setting GID to {DEL_GID}")
     subprocess.run(["/usr/sbin/groupmod", "-g", f"{DEL_GID}", "deluge"])
 
 if not os.path.exists("/config/.config/deluge"):
     print("Making config directory.")
     os.makedirs("/config/.config/deluge")
     subprocess.run(["cp", "/usr/local/etc/core.conf", "/config/.config/deluge/"])
-    subprocess.run(["chown", "-R", f"{DEL_UID}:{DEL_GID}", "/config"])
+
+subprocess.run(["chown", "-R", f"{DEL_UID}:{DEL_GID}", "/config"])
 
 webCmd = ["su", "deluge", "-c", "/usr/bin/deluge-web"]
 webPort = os.getenv("WEB_PORT", None)
@@ -29,6 +32,6 @@ if webPort:
     webCmd.append(webPort)
 
 subprocess.Popen(webCmd)
+
 print("Deluged Init")
-# subprocess.run(["/usr/bin/deluged", "--do-not-daemonize", "-U", "deluge", "-g", "deluge", "-o", DEL_INT])
 subprocess.run(["/usr/bin/run.sh", DEL_PORT, DEL_INT])
