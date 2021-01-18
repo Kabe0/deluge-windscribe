@@ -59,6 +59,7 @@ docker run \
  -v $PWD/downloads:/downloads \
  -p 8112:8112 \
  -p 58846:58846 \
+ --dns 8.8.8.8 \
  --cap-add=NET_ADMIN \
  --device /dev/net/tun:/dev/net/tun \
  --name deluge-windscribe \
