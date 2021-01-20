@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL maintainer="kabe0"
 
@@ -16,6 +16,7 @@ ENV VPN_ENABLE=True
 ENV VPN_AUTH="/config/auth.conf"
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 
+
 # add repo and install qbitorrent
 RUN \
  apt-get update && \
@@ -30,6 +31,7 @@ RUN \
 	nano dnsutils iputils-ping lsof net-tools cron && \
  python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
 # python3 -m pip install pexpect && \
+ apt-get remove --purge resolvconf && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
@@ -42,7 +44,7 @@ RUN \
  useradd -m -d $HOME deluge && \
  usermod -a -G users deluge
 
-# ports and volumes
+
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
 COPY init.py run.py run.sh up.py unblock.sh /usr/bin/
