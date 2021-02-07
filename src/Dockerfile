@@ -22,13 +22,11 @@ RUN \
  apt-get install -y software-properties-common dirmngr apt-transport-https && \
  apt-key adv --no-tty --keyserver keyserver.ubuntu.com --recv-key FDC247B7 && \
  echo 'deb https://repo.windscribe.com/debian buster main' | tee /etc/apt/sources.list.d/windscribe-repo.list && \
-# LC_ALL=C.UTF-8 add-apt-repository ppa:deluge-team/stable && \
  apt-get update && \
  apt-get install -y \
 	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
 	nano dnsutils iputils-ping lsof net-tools cron && \
  python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
-# python3 -m pip install pexpect && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
