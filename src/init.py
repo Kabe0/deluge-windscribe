@@ -39,6 +39,7 @@ if os.getenv('VPN_ENABLE', True).lower() in ['true', '1']:
 
     child.wait()
 
+    print(f"Settings location to {location}")
     child = pexpect.spawn(f"windscribe connect {location}")
     cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF], timeout=50)
     if cond == 0:
