@@ -32,9 +32,15 @@ You may use environment variables to configure your config files. The variables 
 - VPN_USERNAME
 - VPN_PASSWORD
 - VPN_LOCATION
+- WEBPROXY_ENABLED
+- WEBPROXY_PORT
+- WEBPROXY_USERNAME
+- WEBPROXY_PASSWORD
 
 If VPN_USERNAME or VPN_PASSWORD is set, the /config/auth.conf will be ignored. Set the VPN settings to your Windscribe
 login details. VPN_LOCATION is defaulted to _best_ and is optional.
+
+If WEBPROXY_ENABLED is true, then a web-proxy server to allow you to tunnel your web-browser traffic through the same VPN connection is started. The default listening port is 8888. Note that only ports above 1024 can be specified as all ports below 1024 are privileged and would otherwise require root permissions to run. Remember to add a port binding for your selected (or default) port when starting the container. If you set Username and Password it will enable BasicAuth for the proxy.
 
 #### /config/auth.conf file
 A volume mount must be configured for this process to work. In the example shown below, we configure a folder to mount the current
