@@ -3,6 +3,14 @@ import subprocess
 import pexpect
 
 print('Initializing Container')
+
+if os.getenv('LEGACY_IPTABLES', True).lower() in ['true', '1']:
+    print(f"Enabling Legacy IPTables")
+    subprocess.run(["update-alternatives", "--set", "iptables", "/usr/sbin/iptables-legacy"])
+    subprocess.run(["update-alternatives", "--set", "ip6tables", "/usr/sbin/ip6tables-legacy"])
+    subprocess.run(["update-alternatives", "--set", "arptables", "/usr/sbin/arptables-legacy"])
+    subprocess.run(["update-alternatives", "--set", "ebtables", "/usr/sbin/ebtables-legacy"])
+
 if os.getenv('VPN_ENABLE', True).lower() in ['true', '1']:
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
 
@@ -49,7 +57,8 @@ if os.getenv('VPN_ENABLE', True).lower() in ['true', '1']:
 
     child.wait()
 
-    child = pexpect.spawn('windscribe firewall on')
+    firewall = os.getenv('WINDSCRIBE_FIREWALL', 'on')
+    child = pexpect.spawn(f'windscribe firewall {firewall}')
     cond = child.expect(['Please login to use Windscribe', 'Service communication error', pexpect.EOF], timeout=50)
     if cond == 0:
         raise Exception(f"Unable to properly connect to Windscribe. Make sure username/password is correct in the {vpnAuth} file.")

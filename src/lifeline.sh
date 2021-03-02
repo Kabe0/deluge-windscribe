@@ -8,6 +8,7 @@ _kill() {
   windscribe disconnect
   windscribe logout
   windscribe stop
+  /opt/tinyproxy/stop.sh
 }
 
 trap _kill SIGTERM

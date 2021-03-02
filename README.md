@@ -22,17 +22,25 @@ In order to run the container, you will need to create an auth.conf file with th
 
 On first run, the deluge web UI will ask for a password. That password will be set to the default password, which is __deluge__.
 
-### 1. Authorization
-You will need to create a config file to auto-login to Windscribe.
-You can either set some environment variables or configure a config file. The login information will be identical to the username and password you use to login to your windscribe profile. Below goes over both approaches.
-
-#### Environment Variables
+### Environment Variables
 You may use environment variables to configure your config files. The variables are as follows...
 
 - VPN_USERNAME
 - VPN_PASSWORD
 - VPN_LOCATION
+- WEBPROXY_ENABLED
+- WINDSCRIBE_FIREWALL
+- LEGACY_IPTABLES
 
+#### Synology Users and older Linux systems
+If you run into the error message ```Error running "login"``` this is a sign that your iptables uses an older API call. Enable the environment variable ```LEGACY_IPTABLES=true``` to
+force the system to use the legacy IPTables.
+
+### 1. Authorization
+You will need to create a config file to auto-login to Windscribe.
+You can either set some environment variables or configure a config file. The login information will be identical to the username and password you use to login to your windscribe profile. Below goes over both approaches.
+
+#### Login Options
 If VPN_USERNAME or VPN_PASSWORD is set, the /config/auth.conf will be ignored. Set the VPN settings to your Windscribe
 login details. VPN_LOCATION is defaulted to _best_ and is optional.
 
@@ -40,6 +48,7 @@ login details. VPN_LOCATION is defaulted to _best_ and is optional.
 A volume mount must be configured for this process to work. In the example shown below, we configure a folder to mount the current
 working directory to $PWD/config:/config. The location of the config file will be the path set in the environment variable VPN_AUTH (/config/auth.conf). 
 The file itself should contain three lines (no spaces).
+
 ```
 <username>
 <password>
@@ -48,6 +57,17 @@ The file itself should contain three lines (no spaces).
 The file will be automatically loaded when the container is started, otherwise the container will fail to connect and terminate. 
 
 The location line is optional, but if defined will let you connect to a specific proxy location. For options, view the _Windscribe Location Options_ for options.
+
+### (Optional) Webproxy Configuration
+If WEBPROXY_ENABLED is true, then a web-proxy server to allow you to tunnel your web-browser traffic through the same VPN connection is started. 
+
+The default listening port is 8888. Note that only ports above 1024 can be specified as all ports below 1024 are privileged and would otherwise require root permissions to run. Remember to add a port binding for your selected (or default) port when starting the container. If you set Username and Password it will enable BasicAuth for the proxy.
+Please ensure these variables are set to ensure that the proxy will work:
+
+- WEBPROXY_PORT
+- WEBPROXY_USERNAME
+- WEBPROXY_PASSWORD
+- PROXY_CONF
 
 ### 2. Container Command
 
@@ -88,11 +108,21 @@ the Windscribe service has enough permissions to change the network configuratio
 | DEL_PORT | 58846 | The port the Daemon runs on. |
 | DEL_UID | 1000 | The ID used for the main deluge user account. Changing this value could break the config folder. |
 | DEL_GID | 1000 | The ID used for the main deluge group account. Changing this value could break the config folder. |
+| VPN_ENABLE | True | Disables the VPN if needed for debugging
 | VPN_AUTH | /config/auth.conf | The path for the auth.conf which should store the username and password. If the file is not found, the application will still try to connect to the Windscribe server. |
 | VPN_USERNAME | null | (Optional) alternative to using the VPN_AUTH file. VPN_PASSWORD must also be set at the same time.
 | VPN_PASSWORD | null | (Optional) alternative to using the VPN_AUTH file. VPN_USERNAME must also be set at the same time.
 | VPN_LOCATION | best | (Optional) alternative to using the VPN_AUTH file.
 | HOME | /config | The path to the home directory.|
+| WINDSCRIBE_FIREWALL | on | Toggle the firewall mode for Windscribe
+| LEGACY_IPTABLES | False | Can be turned on to setup legacy tables if the base OS uses the legacy iptables protocol.
+
+#### WINDSCRIBE_FIREWALL Variable Details
+This variable has three possible values:
+- **o**:     Always active regardless connection status.
+- _auto_:   Only active when we are connected.
+- _off_:    Windscribe firewall is deactivated.
+
 
 ### Windscribe Location Options
 You may use any of the values to select a location. The Label column allows connecting directly to a single VPN location.
@@ -244,7 +274,7 @@ You may use any of the values to select a location. The Label column allows conn
 |Thailand|TH|Bangkok|Khao San|
 |Thailand|TH|Bangkok|Reclining Buddha|
 |United Arab Emirates  AE|Dubai|Khalifa
-Vietnam|VN                     Hanoi           Red River|
+|Vietnam|VN|Hanoi Red River|
 |WINDFLIX JP|JP-N|Tokyo|Kaiju|
 |Argentina|AR|Buenos Aires|Madero|
 |Argentina|AR|Buenos Aires|Tango|

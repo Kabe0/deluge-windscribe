@@ -15,6 +15,11 @@ ENV DEL_INT=tun0
 ENV VPN_ENABLE=True
 ENV VPN_AUTH="/config/auth.conf"
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+ENV WEBPROXY_ENABLED=true
+ENV WEBPROXY_PORT=8888
+ENV WEBPROXY_USERNAME=""
+ENV WEBPROXY_PASSWORD=""
+ENV WINDSCRIBE_FIREWALL="on"
 
 RUN \
  apt-get update && \
@@ -27,6 +32,9 @@ RUN \
 	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
 	nano dnsutils iputils-ping lsof net-tools cron && \
  python3 -m pip install pexpect netifaces netaddr pyufw psutil && \
+ echo "**** Install tinyproxy ****" && \
+ apt-get install -y \
+   tinyproxy && \
  apt-get clean && \
  rm -rf \
   /tmp/* \
@@ -44,6 +52,7 @@ VOLUME /config /downloads
 COPY init.py run.py run.sh up.py unblock.sh lifeline.sh /usr/bin/
 COPY core.conf /usr/local/etc/
 COPY unblock-cron /etc/cron.d/unblock-cron
+COPY tinyproxy /opt/tinyproxy/
 
 RUN crontab /etc/cron.d/unblock-cron
 
