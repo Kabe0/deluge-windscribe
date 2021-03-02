@@ -57,17 +57,6 @@ The file will be automatically loaded when the container is started, otherwise t
 
 The location line is optional, but if defined will let you connect to a specific proxy location. For options, view the _Windscribe Location Options_ for options.
 
-### (Optional) Webproxy Configuration
-If WEBPROXY_ENABLED is true, then a web-proxy server to allow you to tunnel your web-browser traffic through the same VPN connection is started. 
-
-The default listening port is 8888. Note that only ports above 1024 can be specified as all ports below 1024 are privileged and would otherwise require root permissions to run. Remember to add a port binding for your selected (or default) port when starting the container. If you set Username and Password it will enable BasicAuth for the proxy.
-Please ensure these variables are set to ensure that the proxy will work:
-
-- WEBPROXY_PORT
-- WEBPROXY_USERNAME
-- WEBPROXY_PASSWORD
-- PROXY_CONF
-
 ### 2. Container Command
 
 To run the docker image, below is the typical configuration...
@@ -149,12 +138,21 @@ the Windscribe service has enough permissions to change the network configuratio
 | WINDSCRIBE_FIREWALL | on | Toggle the firewall mode for Windscribe
 | LEGACY_IPTABLES | False | Can be turned on to setup legacy tables if the base OS uses the legacy iptables protocol.
 
-#### WINDSCRIBE_FIREWALL Variable Details
+#### (Optional) WINDSCRIBE_FIREWALL Variable Details
 This variable has three possible values:
-- **o**:     Always active regardless connection status.
+- **on**:     Always active regardless connection status.
 - _auto_:   Only active when we are connected.
 - _off_:    Windscribe firewall is deactivated.
 
+#### (Optional) Webproxy Configuration
+If WEBPROXY_ENABLED is true, then a web-proxy server to allow you to tunnel your web-browser traffic through the same VPN connection is started. 
+
+The default listening port is 8888. Note that only ports above 1024 can be specified as all ports below 1024 are privileged and would otherwise require root permissions to run. Remember to add a port binding for your selected (or default) port when starting the container. If you set Username and Password it will enable BasicAuth for the proxy.:
+
+- WEBPROXY_PORT
+- WEBPROXY_USERNAME
+- WEBPROXY_PASSWORD
+- PROXY_CONF
 
 ### Windscribe Location Options
 You may use any of the values to select a location. The Label column allows connecting directly to a single VPN location.
