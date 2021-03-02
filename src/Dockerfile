@@ -17,9 +17,9 @@ ENV VPN_AUTH="/config/auth.conf"
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 ENV WEBPROXY_ENABLED=true
 ENV WEBPROXY_PORT=8888
-ENV WEBPROXY_USERNAME=
-ENV WEBPROXY_PASSWORD=
-ENV WINDSCRIBE_FIREWALL="auto"
+ENV WEBPROXY_USERNAME=""
+ENV WEBPROXY_PASSWORD=""
+ENV WINDSCRIBE_FIREWALL="on"
 
 RUN \
  apt-get update && \
@@ -47,13 +47,12 @@ RUN \
  useradd -m -d $HOME deluge && \
  usermod -a -G users deluge
 
-ADD tinyproxy /opt/tinyproxy/
-
 EXPOSE 8112 6881/udp
 VOLUME /config /downloads
 COPY init.py run.py run.sh up.py unblock.sh lifeline.sh /usr/bin/
 COPY core.conf /usr/local/etc/
 COPY unblock-cron /etc/cron.d/unblock-cron
+COPY tinyproxy /opt/tinyproxy/
 
 RUN crontab /etc/cron.d/unblock-cron
 

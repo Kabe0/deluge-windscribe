@@ -6,6 +6,8 @@ find_proxy_conf()
       PROXY_CONF='/etc/tinyproxy.conf'
     elif [[ -f /etc/tinyproxy/tinyproxy.conf ]]; then
       PROXY_CONF='/etc/tinyproxy/tinyproxy.conf'
+    elif [[ -f /config/tinyproxy.conf ]]; then
+      PROXY_CONF='/config/tinyproxy.conf'
     else
      echo "ERROR: Could not find tinyproxy config file. Exiting..."
      exit 1
