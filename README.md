@@ -28,7 +28,6 @@ You may use environment variables to configure your config files. The variables 
 - VPN_USERNAME
 - VPN_PASSWORD
 - VPN_LOCATION
-- WEBPROXY_ENABLED
 - WINDSCRIBE_FIREWALL
 - LEGACY_IPTABLES
 
@@ -84,6 +83,39 @@ docker run \
  --device /dev/net/tun:/dev/net/tun \
  --name deluge-windscribe \
  kabe0/deluge-windscribe
+```
+
+### Combining with other containers
+
+If you want to combine this container with other docker containers in order to share the vpn connection you can chain the containers together using a service such as docker-compose. Below is an example of a docker-compose.yml file using both the deluge_windscribe container with sonarr. All the ports must be assigned to the main deluge-windscribe container.
+
+```yml
+version: "3"
+services:
+  deluge-windscribe:
+    restart: unless-stopped
+    image: kabe0/deluge-windscribe:latest
+    volumes:
+      - ./downloads:/downloads
+      - ./config/deluge:/config
+    dns:
+      - 8.8.8.8
+    ports:
+      - 8112:8112
+      - 8989:8989
+      - 58846:58846
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+  sonarr:
+    depends_on: [deluge-windscribe]
+    restart: unless-stopped
+    network_mode: "service:deluge-windscribe"
+    image: linuxserver/sonarr:latest
+    volumes:
+      - ./config/sonarr:/config
+      - ./downloads:/downloads
 ```
 
 ### Command Details
