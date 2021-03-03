@@ -4,14 +4,14 @@ import pexpect
 
 print('Initializing Container')
 
-if os.getenv('LEGACY_IPTABLES', True).lower() in ['true', '1']:
+if os.getenv('LEGACY_IPTABLES', 'False').lower() in ['true', '1']:
     print(f"Enabling Legacy IPTables")
     subprocess.run(["update-alternatives", "--set", "iptables", "/usr/sbin/iptables-legacy"])
     subprocess.run(["update-alternatives", "--set", "ip6tables", "/usr/sbin/ip6tables-legacy"])
     subprocess.run(["update-alternatives", "--set", "arptables", "/usr/sbin/arptables-legacy"])
     subprocess.run(["update-alternatives", "--set", "ebtables", "/usr/sbin/ebtables-legacy"])
 
-if os.getenv('VPN_ENABLE', True).lower() in ['true', '1']:
+if os.getenv('VPN_ENABLE', 'True').lower() in ['true', '1']:
     vpnAuth = os.getenv('VPN_AUTH', "/config/auth.conf")
 
     username = os.getenv('VPN_USERNAME')
