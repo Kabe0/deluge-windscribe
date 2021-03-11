@@ -12,4 +12,8 @@ _kill() {
 }
 
 trap _kill SIGTERM
-while true; do :; done
+
+while true
+do
+  tail -f /dev/null & wait ${!}
+done
