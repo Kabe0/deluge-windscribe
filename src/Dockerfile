@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
 
 LABEL maintainer="kabe0"
 
@@ -15,7 +15,7 @@ ENV DEL_INT=tun0
 ENV VPN_ENABLE=True
 ENV LEGACY_IPTABLES=False
 ENV VPN_AUTH="/config/auth.conf"
-ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1WEB_PORT
 ENV WEBPROXY_ENABLED=false
 ENV WEBPROXY_PORT=8888
 ENV WEBPROXY_USERNAME=""
@@ -27,7 +27,9 @@ RUN \
  apt-get install -y  && \
  apt-get install -y software-properties-common dirmngr apt-transport-https && \
  apt-key adv --no-tty --keyserver keyserver.ubuntu.com --recv-key FDC247B7 && \
- echo 'deb https://repo.windscribe.com/debian buster main' | tee /etc/apt/sources.list.d/windscribe-repo.list && \
+ add-apt-repository ppa:deluge-team/stable && \
+ add-apt-repository ppa:libtorrent.org/1.2-daily && \
+ echo 'deb https://repo.windscribe.com/debian bionic main' | tee /etc/apt/sources.list.d/windscribe-repo.list && \
  apt-get update && \
  apt-get install -y \
 	python3 python3-pip windscribe-cli iptables-persistent deluged deluge-web deluge-console resolvconf- \
