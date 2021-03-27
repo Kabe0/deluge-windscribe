@@ -35,6 +35,9 @@ You may use environment variables to configure your config files. The variables 
 If you run into the error message ```Error running "login"``` this is a sign that your iptables uses an older API call. Enable the environment variable ```LEGACY_IPTABLES=true``` to
 force the system to use the legacy IPTables.
 
+#### [Errno 1] Operation not permitted
+If this error is thrown, that means that the OS is not allowing commands to execute in python. Currently the work around that has worked for me is setting the flag ```--privileged```. In the future, I'll take a closer look at which permissions are causing the problems.
+
 ### 1. Authorization
 You will need to create a config file to auto-login to Windscribe.
 You can either set some environment variables or configure a config file. The login information will be identical to the username and password you use to login to your windscribe profile. Below goes over both approaches.
